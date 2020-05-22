@@ -1,6 +1,6 @@
 
 
-.input1 {
+.input, .inputZ {
 	height: 30px;
     width: 70px;
     margin-top: 4px;
@@ -15,7 +15,7 @@
 	margin-left:20px;
 }
 
-.btn-continuar{
+.btn-maximizar{
 	color:#FFF;
 	background-color: #44d373;
 	border-radius:15px;
@@ -31,7 +31,7 @@
 	
 }
 
-.btn-voltar{
+.btn-solucao{
 	color:#FFF;
 	background-color: #4a79d9;
 	border-radius:15px;
@@ -47,7 +47,7 @@
 	
 }
 
-.target{
+.aqui{
 	margin-left:20px;
 	
 }
