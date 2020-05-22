@@ -107,7 +107,7 @@ function resolver() {
 		coluna++;
 	}
 	matriz[linhas][coluna] = 0;
-	printTabela(matriz);
+	//printTabela(matriz);
 	
 	var ite = 1;
 	while (condicaoParada(matriz)) {
@@ -115,8 +115,8 @@ function resolver() {
 		calcMatriz(matriz);
 		ite++;
 	}
-	
-	/*var solucao = "Solução: ";
+	/*
+	var solucao = "Solução: ";
 	
 	for (var n = 1; n <= variaveis; n++) {
 		var valor = 0;
@@ -334,7 +334,7 @@ function calcMatriz(p_matriz) {
 			var fracao = new Fraction(-1*aux);
 			var numFormatado = fracao.toFraction();
 			//document.getElementById("tab").innerHTML+="<p>Linha "+i+" = Linha "+i+" + ("+numFormatado+") * Linha "+indMenor+"</p>";
-			//printTabela(p_matriz);
+			printTabela(p_matriz);
 		}
 	}
 }
