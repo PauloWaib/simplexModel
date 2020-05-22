@@ -107,7 +107,6 @@ function resolver() {
 		coluna++;
 	}
 	matriz[linhas][coluna] = 0;
-	document.body.innerHTML = "";
 	printTabela(matriz);
 	
 	var ite = 1;
