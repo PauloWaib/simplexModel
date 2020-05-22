@@ -56,7 +56,7 @@ function resolver() {
 	document.getElementById("tab").innerHTML+="<h2>Resolução</h2>";
 	document.getElementById("tab").innerHTML+="<hr/>";
 	matriz = [[]];
-	matriz[0][0] = 'VB';
+	matriz[0][0] = 'Base';
 	
 	var indice = 1;
 	for (var l = 1; l <= variaveis; l++) {
