@@ -1,8 +1,3 @@
-
-function atualizar() {
-	window.location.href='simplex.html';
-}
-
 function criarForm(var_decisao, restricoes) {
 	
 	if (var_decisao == "" || var_decisao <= 0 || var_decisao != parseInt(var_decisao)) {
@@ -41,7 +36,79 @@ function criarForm(var_decisao, restricoes) {
 	}
 } 
 
-function resolver() {
+function resolverDireto() {
+	var restricoes = parseInt(document.config_inicial.restricoes.value);
+	var variaveis = parseInt(document.config_inicial.variaveis.value);	
+	var linhas = parseInt(document.config_inicial.restricoes.value) + 1;
+	var colunas = parseInt(document.config_inicial.variaveis.value) + parseInt(document.config_inicial.restricoes.value) + 1;
+	
+	if (validarCoeficientes(variaveis, restricoes) == 1) {
+		return;
+	}
+	esconder(variaveis, restricoes);
+	
+	document.getElementById("btn_solucao").style.display = 'none';
+	document.getElementById("tab").innerHTML+="<h2>Resolução</h2>";
+	document.getElementById("tab").innerHTML+="<hr/>";
+	matriz = [[]];
+	matriz[0][0] = 'Base';
+	
+	var indice = 1;
+	for (var l = 1; l <= variaveis; l++) {
+		matriz[0][indice] = "x"+indice;
+		indice++;
+	}
+	for (var m = 1; m <= restricoes; m++) {
+		matriz[0][indice] = "f"+m;
+		indice++;
+	}
+	
+	matriz[0][matriz[0].length] = 'b';
+
+	var x = document.querySelectorAll(".input");
+	indice = 0;
+	var coluna = 0;
+	for (var i = 1; i < linhas; i++) {
+		matriz.push(['f'+i]);
+		for (var j = 1; j <= variaveis; j++) {
+			matriz[i][j] = parseFloat(x[indice].value.replace(",","."));
+			indice++;
+		}
+		coluna = variaveis + 1;
+		for (var k = 1; k <= restricoes; k++) {
+			if(i==k) {
+				matriz[i][coluna] = 1;
+			} else {
+				matriz[i][coluna] = 0;
+			}
+			coluna++;
+		}
+		matriz[i][coluna] = x[indice].value;
+		indice++;
+	}
+	
+
+	// Adicionando a última linha '-Z'
+	var z = document.querySelectorAll(".inputZ");
+	coluna = 0;
+	matriz.push(['Z']);
+	for (var l = 0; l < variaveis; l++) {
+		matriz[linhas][l+1] = parseFloat(z[l].value.replace(",",".")) * (-1);
+	}
+	coluna = variaveis + 1;
+	for (var m = 1; m <= restricoes; m++) {
+		matriz[linhas][coluna] = 0;
+		coluna++;
+	}
+	matriz[linhas][coluna] = 0;
+	
+	var ite = 1;
+	while (condicaoParada(matriz)) {
+		calcMatrizDireto(matriz);
+		ite++;
+	}
+}
+function resolverPasso() {
 	var restricoes = parseInt(document.config_inicial.restricoes.value);
 	var variaveis = parseInt(document.config_inicial.variaveis.value);	
 	var linhas = parseInt(document.config_inicial.restricoes.value) + 1;
@@ -107,15 +174,15 @@ function resolver() {
 		coluna++;
 	}
 	matriz[linhas][coluna] = 0;
-	//printTabela(matriz);
+	printTabela(matriz);
 	
 	var ite = 1;
 	while (condicaoParada(matriz)) {
-		//document.getElementById("tab").innerHTML+="<p><b>Iteração "+ite+"</b></p>";
-		calcMatriz(matriz);
+		document.getElementById("tab").innerHTML+="<p><b>Iteração "+ite+"</b></p>";
+		calcMatrizPasso(matriz);
 		ite++;
 	}
-	/*
+	
 	var solucao = "Solução: ";
 	
 	for (var n = 1; n <= variaveis; n++) {
@@ -126,19 +193,15 @@ function resolver() {
 				break;
 			}
 		}
-		var fracao = new Fraction(valor);
-		var numFormatado = fracao.toFraction();
 		if (n == variaveis) {
-			solucao += "x<sub>"+n+"</sub> = "+numFormatado;
+			solucao += "x<sub>"+n+"</sub> = "+valor;
 		} else {
-			solucao += "x<sub>"+n+"</sub> = "+numFormatado+", ";
+			solucao += "x<sub>"+n+"</sub> = "+valor+", ";
 		}
 	}
-	var fracao = new Fraction((matriz[linhas][colunas]));
-	var z = fracao.toFraction();
-	solucao += " e Z = "+z;
+	solucao += " e Z = "+(matriz[linhas][colunas]);
 	document.getElementById("tab").innerHTML+="<p><b>"+solucao+"</b></p>";
-	*/
+	
 }
 
 function validarCoeficientes(p_variaveis, p_restricoes) {
@@ -234,8 +297,6 @@ function printTabela(p_matriz) {
 				td.appendChild(b);
 			} else {
 				if (variavel != 'Z') {
-					var fracao = new Fraction(variavel);
-					variavel = fracao.toFraction();
 					var texto = document.createTextNode(variavel);
 					td.appendChild(texto);
 				} else {
@@ -267,11 +328,10 @@ function condicaoParada(p_matriz) {
 	}
 	return false;
 }
-function calcMatriz(p_matriz) {
+function calcMatrizDireto(p_matriz) {
 	var nLinhas = p_matriz.length - 1;
 	var nColunas = p_matriz[nLinhas].length - 1;
 
-	console.log(p_matriz[nLinhas][j])
 
 	// Escolhendo qual colocar como variável básica
 	var maior = p_matriz[nLinhas][1];
@@ -296,21 +356,6 @@ function calcMatriz(p_matriz) {
 	}
 	var v_in = p_matriz[0][indMaior];
 	var v_out = p_matriz[indMenor][0];
-	/*document.getElementById("tab")
-		.innerHTML += "<p>Troca VB: entra " + 
-		v_in.substr(0,1) + 
-		"<sub>" + 
-		v_in.substr(1,1) + 
-		"</sub> e sai " + 
-		v_out.substr(0,1) + 
-		"<sub>" + 
-		v_out.substr(1,1) + 
-		"</sub></p>";
-
-	p_matriz[indMenor][0] = p_matriz[0][indMaior];
-	
-	printTabela(p_matriz);
-	*/
 
 	// Deixando o valor da nova variável básica == 1
 	var aux = p_matriz[indMenor][indMaior];
@@ -318,10 +363,6 @@ function calcMatriz(p_matriz) {
 		for (l = 1; l <= nColunas; l++) {
 			p_matriz[indMenor][l] = p_matriz[indMenor][l] / aux;
 		}
-		var fracao = new Fraction(1/aux);
-		var numFormatado = fracao.toFraction();
-		//document.getElementById("tab").innerHTML+="<p>Linha "+indMenor+" = Linha "+indMenor+" * "+numFormatado+"</p>";
-		//printTabela(p_matriz);
 	}
 
 	// Zerando os outros valores na coluna da nova variável básica
@@ -331,10 +372,67 @@ function calcMatriz(p_matriz) {
 			for (j = 1; j <= nColunas; j++) {
 				p_matriz[i][j] = parseFloat(p_matriz[i][j]) + parseFloat(-1 * aux * p_matriz[indMenor][j]);
 			}
-			var fracao = new Fraction(-1*aux);
-			var numFormatado = fracao.toFraction();
-			//document.getElementById("tab").innerHTML+="<p>Linha "+i+" = Linha "+i+" + ("+numFormatado+") * Linha "+indMenor+"</p>";
-			printTabela(p_matriz);
 		}
 	}
+}
+
+function calcMatrizPasso(p_matriz) {
+	var nLinhas = p_matriz.length - 1;
+	var nColunas = p_matriz[nLinhas].length - 1;
+
+	console.log(p_matriz[nLinhas][j])
+
+	// Escolhendo qual colocar como variável básica
+	var maior = p_matriz[nLinhas][1];
+	indMaior = 1;
+
+	for (j = 2; j <= nColunas; j++) {
+		if (p_matriz[nLinhas][j] < maior) {
+			maior = p_matriz[nLinhas][j];
+			indMaior = j;
+		}
+	}
+
+	// Escolhendo qual variável básica sai
+	var menor = Number.MAX_VALUE;
+	var indMenor = 0;
+	for (k = 1; k < nLinhas; k++) {
+		var teste = p_matriz[k][nColunas] / p_matriz[k][indMaior]; 
+		if (p_matriz[k][indMaior] != 0 && teste < menor && teste >= 0 ) { 
+			menor = p_matriz[k][nColunas] / p_matriz[k][indMaior];
+			indMenor = k;
+		}
+	}
+	var v_in = p_matriz[0][indMaior];
+	var v_out = p_matriz[indMenor][0];
+	document.getElementById("tab")
+		.innerHTML += "<p>Troca BASE: entra " + 
+		v_in.substr(0,1) + 
+		"<sub>" + 
+		v_in.substr(1,1) + 
+		"</sub> e sai " + 
+		v_out.substr(0,1) + 
+		"<sub>" + 
+		v_out.substr(1,1) + 
+		"</sub></p>";
+
+	p_matriz[indMenor][0] = p_matriz[0][indMaior];	
+
+	// Deixando o valor da nova variável básica == 1
+	var aux = p_matriz[indMenor][indMaior];
+	if (aux != 1) {
+		for (l = 1; l <= nColunas; l++) {
+			p_matriz[indMenor][l] = p_matriz[indMenor][l] / aux;
+		}
+	}
+	// Zerando os outros valores na coluna da nova variável básica
+	for (i = 1; i <= nLinhas; i++) {
+		var aux = p_matriz[i][indMaior];
+		if (i != indMenor && aux != 0) {
+			for (j = 1; j <= nColunas; j++) {
+				p_matriz[i][j] = parseFloat(p_matriz[i][j]) + parseFloat(-1 * aux * p_matriz[indMenor][j]);
+			}			
+		}
+	}
+	printTabela(p_matriz);
 }
