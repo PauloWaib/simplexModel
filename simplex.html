@@ -3,7 +3,6 @@
 <head>
 	<meta charset="UTF-8">
 	<script type="text/javascript" src="funcoes.js" charset="UTF-8"></script>
-	<script type="text/javascript" src="fractions.js" charset="UTF-8"></script>
 	<link rel="stylesheet" type="text/css" href="estilo.css" />
 	<title>Modelo Simplex</title>
 </head>
@@ -36,7 +35,8 @@
 					</div>
 				</div>
 					<input type="button" class="btn-maximizar" id="btn_max" name="maximizar" value="maximizar" onClick="criarForm(variaveis.value,restricoes.value)"/>
-				
+					<input type="button" class="btn-minimizar" id="btn_min" name="minimizar" value="minimizar" onClick="criarForm(variaveis.value,restricoes.value)"/>
+
 		</form>
 		
 		<br/>
@@ -45,7 +45,8 @@
 				<p><b>Defina os coeficientes das variáveis de decisão que compõe a função objetivo</b></p>
 				<div id="target" class="target"></div>
 				<br/>
-				<label><input type="reset" class="btn-solucao" id="btn_solucao" name="solucao" value="solução direta" onClick="resolver()"/></label>
+				<label><input type="reset" class="btn-solucao" id="btn_solucao" name="solucao" value="solução direta" onClick="resolverDireto()"/></label>
+				<label><input type="reset" class="btn-passo" id="btn_passo" name="passo" value="passo-a-passo" onClick="resolverPasso()"/></label>
 			</form>
 			<div id="tab" style="width: 80%; margin: 0 auto;"></div>
 		</div>
