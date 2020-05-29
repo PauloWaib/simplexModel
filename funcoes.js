@@ -101,7 +101,6 @@ function resolverDireto() {
 		coluna++;
 	}
 	matriz[linhas][coluna] = 0;
-	printTabela(matriz);
 	
 	var ite = 1;
 	while (condicaoParada(matriz)) {
@@ -350,8 +349,6 @@ function condicaoParada(p_matriz) {
 function calcMatrizDireto(p_matriz) {
 	var nLinhas = p_matriz.length - 1;
 	var nColunas = p_matriz[nLinhas].length - 1;
-
-	console.log(p_matriz[nLinhas][j])
 
 	// Escolhendo qual colocar como variável básica
 	var maior = p_matriz[nLinhas][1];
