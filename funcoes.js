@@ -101,12 +101,31 @@ function resolverDireto() {
 		coluna++;
 	}
 	matriz[linhas][coluna] = 0;
+	printTabela(matriz);
 	
 	var ite = 1;
 	while (condicaoParada(matriz)) {
 		calcMatrizDireto(matriz);
 		ite++;
 	}
+	var solucao = "Solução: ";
+	
+	for (var n = 1; n <= variaveis; n++) {
+		var valor = 0;
+		for (var o = 1; o <= restricoes; o++) {
+			if (matriz[o][0] == 'x'+n) {
+				valor = matriz[o][colunas];
+				break;
+			}
+		}
+		if (n == variaveis) {
+			solucao += "x<sub>"+n+"</sub> = "+valor;
+		} else {
+			solucao += "x<sub>"+n+"</sub> = "+valor+", ";
+		}
+	}
+	solucao += " e Z = "+(matriz[linhas][colunas]);
+	document.getElementById("tab").innerHTML+="<p><b>"+solucao+"</b></p>";
 }
 function resolverPasso() {
 	var restricoes = parseInt(document.config_inicial.restricoes.value);
@@ -332,6 +351,7 @@ function calcMatrizDireto(p_matriz) {
 	var nLinhas = p_matriz.length - 1;
 	var nColunas = p_matriz[nLinhas].length - 1;
 
+	console.log(p_matriz[nLinhas][j])
 
 	// Escolhendo qual colocar como variável básica
 	var maior = p_matriz[nLinhas][1];
@@ -348,14 +368,26 @@ function calcMatrizDireto(p_matriz) {
 	var menor = Number.MAX_VALUE;
 	var indMenor = 0;
 	for (k = 1; k < nLinhas; k++) {
-		var teste = p_matriz[k][nColunas] / p_matriz[k][indMaior]; //não testou após mudança
-		if (p_matriz[k][indMaior] != 0 && teste < menor && teste >= 0 ) { //não testou após mudança
+		var teste = p_matriz[k][nColunas] / p_matriz[k][indMaior]; 
+		if (p_matriz[k][indMaior] != 0 && teste < menor && teste >= 0 ) { 
 			menor = p_matriz[k][nColunas] / p_matriz[k][indMaior];
 			indMenor = k;
 		}
 	}
 	var v_in = p_matriz[0][indMaior];
 	var v_out = p_matriz[indMenor][0];
+	document.getElementById("tab")
+		.innerHTML += "<p>Troca BASE: entra " + 
+		v_in.substr(0,1) + 
+		"<sub>" + 
+		v_in.substr(1,1) + 
+		"</sub> e sai " + 
+		v_out.substr(0,1) + 
+		"<sub>" + 
+		v_out.substr(1,1) + 
+		"</sub></p>";
+
+	p_matriz[indMenor][0] = p_matriz[0][indMaior];	
 
 	// Deixando o valor da nova variável básica == 1
 	var aux = p_matriz[indMenor][indMaior];
@@ -364,16 +396,16 @@ function calcMatrizDireto(p_matriz) {
 			p_matriz[indMenor][l] = p_matriz[indMenor][l] / aux;
 		}
 	}
-
 	// Zerando os outros valores na coluna da nova variável básica
 	for (i = 1; i <= nLinhas; i++) {
 		var aux = p_matriz[i][indMaior];
 		if (i != indMenor && aux != 0) {
 			for (j = 1; j <= nColunas; j++) {
 				p_matriz[i][j] = parseFloat(p_matriz[i][j]) + parseFloat(-1 * aux * p_matriz[indMenor][j]);
-			}
+			}			
 		}
 	}
+	printTabela(p_matriz);
 }
 
 function calcMatrizPasso(p_matriz) {
