@@ -106,9 +106,6 @@ function criarForm(var_decisao, restricoes, event) {
 				.innerHTML += "<span> <= </span>" + defineInputB(i) 
 		}
 
-		for (let i = 0; i < restricoes; i++) {
-			
-		}
 		document.getElementById("target").innerHTML += "<p><b>Restrição " + (++restricoes) + "</b></p>"
 			+ "<p>x<sub>i</sub> >= 0</p>";
 		document.getElementById("btn_max").style.display = 'none';
@@ -122,6 +119,8 @@ function criarForm(var_decisao, restricoes, event) {
 }
 
 function resolverDireto() {
+	segundaTela.classList.add('hide');
+
 	var restricoes = parseInt(document.config_inicial.restricoes.value);
 	var variaveis = parseInt(document.config_inicial.variaveis.value);
 	var linhas = parseInt(document.config_inicial.restricoes.value) + 1;
@@ -132,7 +131,7 @@ function resolverDireto() {
 	}
 	esconder(variaveis, restricoes);
 
-	document.getElementById("btn_solucao").style.display = 'none';
+	// document.getElementById("btn_solucao").style.display = 'none';
 	document.getElementById("tab").innerHTML += "<h2>Resolução</h2>";
 	document.getElementById("tab").innerHTML += "<hr/>";
 	matriz = [[]];
@@ -222,7 +221,7 @@ function resolverPasso() {
 	}
 	esconder(variaveis, restricoes);
 
-	document.getElementById("btn_solucao").style.display = 'none';
+	// document.getElementById("btn_solucao").style.display = 'none';
 	document.getElementById("tab").innerHTML += "<h2>Resolução</h2>";
 	document.getElementById("tab").innerHTML += "<hr/>";
 	matriz = [[]];
