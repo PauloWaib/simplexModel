@@ -1,5 +1,6 @@
 const primeiraTela = document.getElementById('primeira_parte')
 const segundaTela = document.getElementById('segunda_parte')
+const terceiraTela = document.getElementById('terceira_parte')
 
 function criarForm(var_decisao, restricoes, event) {
 	// Esse código evita a tela de ser atualizada
@@ -120,6 +121,7 @@ function criarForm(var_decisao, restricoes, event) {
 
 function resolverDireto() {
 	segundaTela.classList.add('hide');
+	terceiraTela.classList.remove('hide');
 
 	var restricoes = parseInt(document.config_inicial.restricoes.value);
 	var variaveis = parseInt(document.config_inicial.variaveis.value);
@@ -210,7 +212,11 @@ function resolverDireto() {
 	solucao += " e Z = "+(matriz[linhas][colunas]);
 	document.getElementById("tab").innerHTML+="<p><b>"+solucao+"</b></p>";
 }
+
 function resolverPasso() {
+	segundaTela.classList.add('hide');
+	terceiraTela.classList.remove('hide');
+	
 	var restricoes = parseInt(document.config_inicial.restricoes.value);
 	var variaveis = parseInt(document.config_inicial.variaveis.value);
 	var linhas = parseInt(document.config_inicial.restricoes.value) + 1;

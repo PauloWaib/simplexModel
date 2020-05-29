@@ -63,8 +63,8 @@
             </div>
             <button
               class="waves-effect waves-light btn purple darken-2"
-							id="btn_max"
-							type="button"
+              id="btn_max"
+              type="button"
               name="maximizar"
               onClick="criarForm(variaveis.value,restricoes.value, event)"
             >
@@ -72,8 +72,8 @@
             </button>
             <button
               class="waves-effect waves-light btn light-blue"
-							id="btn_min"
-							type="button"
+              id="btn_min"
+              type="button"
               name="minimizar"
               onClick="criarForm(variaveis.value,restricoes.value, event)"
             >
@@ -85,41 +85,42 @@
 
       <div class="card hide" id="segunda_parte">
         <div class="card-content">
-          <form
-            method="post"
-            name="form2"
-            id="form2"
-          >
+          <form method="post" name="form2" id="form2">
             <p>Função objetivo:</p>
 
-						<!-- Aqui vai o conteúdo do segundo formulário -->
+            <!-- Aqui vai o conteúdo do segundo formulário -->
             <div id="target" class="target"></div>
 
-						<button
-							class="waves-effect waves-light btn purple darken-2"
-							id="btn_max"
-							type="button"
-							name="maximizar"
-							onClick="resolverDireto()"
-						>
-							SOLUÇÃO DIRETA
-						</button>
+            <button
+              class="waves-effect waves-light btn purple darken-2"
+              id="btn_max"
+              type="button"
+              name="maximizar"
+              onClick="resolverDireto()"
+            >
+              SOLUÇÃO DIRETA
+            </button>
 
-						<button
-							class="waves-effect waves-light btn purple darken-2"
-							id="btn_max"
-							type="button"
-							name="maximizar"
-							onClick="resolverPasso()"
-						>
-							PASSO A PASSO
-						</button>
+            <button
+              class="waves-effect waves-light btn purple darken-2"
+              id="btn_max"
+              type="button"
+              name="maximizar"
+              onClick="resolverPasso()"
+            >
+              PASSO A PASSO
+            </button>
           </form>
         </div>
-
-        <div id="tab" style="width: 80%; margin: 0 auto;"></div>
+      </div>
+   
+      <div class="card hide" id="terceira_parte">
+        <div class="card-content">
+          <div id="tab" style="width: 80%; margin: 0 auto;"></div>
+        </div>
       </div>
     </div>
+
 
     <!-- Javascript vai aqui -->
     <script type="text/javascript" src="funcoes.js" charset="UTF-8"></script>
