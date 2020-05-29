@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="funcoes.js" charset="UTF-8"></script>
+	<link rel="stylesheet" type="text/css" href="estilo.css" />
+	<title>Modelo Simplex</title>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-5">
+				<h1>Modelo Simplex</h1>
+				<h2>Informe nos campos as informações sobre o sistema de programação linear</h2>
+			</div>
+		</div>
+		<form name="config_inicial">
+				<div class="row">
+					<div class="container-var">
+						<label for="var_decisao" class="texto_1">Quantidade de variáveis de decisão?</label>
+					</div>
+					<div class="col-md-1">
+						<input type="number" class="input1" id="var_decisao" name="variaveis" value="" min="1" max="30" style="height: 40px"/>
+					</div>
+				</div>
+				<br />
+				<br />
+				<div class="row">	
+					<div class="col-md-2">
+						<label for="restricoes" class="texto_1">Quantas restrições o sistema possui?</label>
+					</div>
+					<div class="col-md-2">
+						<input type="number" class="input1" id="rest" name="restricoes" value="" min="1" max="15" style="height: 40px" />
+
+					</div>
+				</div>
+					<input type="button" class="btn-maximizar" id="btn_max" name="maximizar" value="maximizar" onClick="criarForm(variaveis.value,restricoes.value)"/>
+					<input type="button" class="btn-minimizar" id="btn_min" name="minimizar" value="minimizar" onClick="criarForm(variaveis.value,restricoes.value)"/>
+
+		</form>
+		
+		<br/>
+		<div class="row">
+			<form action="" method="post" name="form2" id="form2" style="display:none">
+				<p><b>Defina os coeficientes das variáveis de decisão que compõe a função objetivo</b></p>
+				<div id="target" class="target"></div>
+				<br/>
+				<label><input type="reset" class="btn-solucao" id="btn_solucao" name="solucao" value="solução direta" onClick="resolverDireto()"/></label>
+				<label><input type="reset" class="btn-passo" id="btn_passo" name="passo" value="passo-a-passo" onClick="resolverPasso()"/></label>
+			</form>
+			<div id="tab" style="width: 80%; margin: 0 auto;"></div>
+		</div>
+	</div>
+</body>
+</html>
