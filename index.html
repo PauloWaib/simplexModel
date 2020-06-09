@@ -1,55 +1,190 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-	<meta charset="UTF-8">
-	<script type="text/javascript" src="funcoes.js" charset="UTF-8"></script>
-	<link rel="stylesheet" type="text/css" href="estilo.css" />
-	<title>Modelo Simplex</title>
-</head>
-<body>
-	<div class="container">
-		<div class="row">
-			<div class="col-md-5">
-				<h1>Modelo Simplex</h1>
-				<h2>Informe nos campos as informações sobre o sistema de programação linear</h2>
-			</div>
-		</div>
-		<form name="config_inicial">
-				<div class="row">
-					<div class="container-var">
-						<label for="var_decisao" class="texto_1">Quantidade de variáveis de decisão?</label>
-					</div>
-					<div class="col-md-1">
-						<input type="number" class="input1" id="var_decisao" name="variaveis" value="" min="1" max="30" style="height: 40px"/>
-					</div>
-				</div>
-				<br />
-				<br />
-				<div class="row">	
-					<div class="col-md-2">
-						<label for="restricoes" class="texto_1">Quantas restrições o sistema possui?</label>
-					</div>
-					<div class="col-md-2">
-						<input type="number" class="input1" id="rest" name="restricoes" value="" min="1" max="15" style="height: 40px" />
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link href="assets/css/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/css/main.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+        <title>SIMPLEX PO20</title>
+    </head>
+    <body>
 
-					</div>
-				</div>
-					<input type="button" class="btn-maximizar" id="btn_max" name="maximizar" value="maximizar" onClick="criarForm(variaveis.value,restricoes.value)"/>
-					<input type="button" class="btn-minimizar" id="btn_min" name="minimizar" value="minimizar" onClick="criarForm(variaveis.value,restricoes.value)"/>
+        <section>
+            <div class="container-fluid">
+                <div class="row py-title-custom">
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <h2 class="h2">SIMPLEX PO20</h2>
+                    </div>
+                </div>
 
-		</form>
-		
-		<br/>
-		<div class="row">
-			<form action="" method="post" name="form2" id="form2" style="display:none">
-				<p><b>Defina os coeficientes das variáveis de decisão que compõe a função objetivo</b></p>
-				<div id="target" class="target"></div>
-				<br/>
-				<label><input type="reset" class="btn-solucao" id="btn_solucao" name="solucao" value="solução direta" onClick="resolverDireto()"/></label>
-				<label><input type="reset" class="btn-passo" id="btn_passo" name="passo" value="passo-a-passo" onClick="resolverPasso()"/></label>
-			</form>
-			<div id="tab" style="width: 80%; margin: 0 auto;"></div>
-		</div>
-	</div>
-</body>
+                <div id="box-btns-slider" class="row" style="display: none;">
+                    <div class="col-md-6 d-flex justify-content-around">
+                        <a href="#iteracoes" class="js-scroll-trigger">
+                            <button type="button" class="btn btn-info js-scroll-trigger" id="btnIteracoes" onclick="mostrarIteracoes();" name="ok" value="ok">
+                                Solução Passo a Passo
+                            </button>
+                        </a>
+                    </div>
+                    <div class="col-md-6 d-flex justify-content-around">
+                        <a href="#solucaoFinal" class="js-scroll-trigger">
+                            <button type="button" class="btn btn-success js-scroll-trigger" id="btnSolucaoFinal" onclick="mostrarSolucaoFinal();" name="ok" value="ok">
+                                Solução Direta
+                            </button>
+                        </a>
+                    </div>
+                </div>
+
+                <form name="form1" id="form1">
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4 d-flex justify-content-between text-center text-muted">
+                            <div class="form-check py-3">
+                            </div>
+                            <div class="form-check py-3 ml-3">
+                                <a class="link-minimize" href="">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-md-4 col-md-4 offset-md-4 d-flex justify-content-start text-center text-muted">
+                            <div class="input-group ml-5 mr-5 py-3">
+                                <input type="number" id="in1" name="variaveis" value="" min="1" autocomplete="off" class="form-control" placeholder="Número de Variáveis de Decisão" autofocus aria-describedby="basic-addon2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-md-4 col-md-4 offset-md-4 d-flex justify-content-start text-center text-muted">
+                            <div class="input-group ml-5 mr-5 py-3">
+                                <input type="number" id="in2" name="regras" value="" min="1" autocomplete="off" class="form-control" placeholder="Número de Restrições" autofocus aria-describedby="basic-addon2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-md-5 col-md-2 offset-md-3 d-flex justify-content-around">
+					
+							<button type="button" class="btn btn-primary" id="minimize" name="simplex" value="minimize" onClick="criarForm(variaveis.value,regras.value,1)" >
+									<a href="#in1" class="js-scroll-trigger">Minimizar</a>
+							</button>
+							
+							<button type="button" class="btn btn-primary" id="maximize" name="simplex" value="maximize" onClick="criarForm(variaveis.value,regras.value,2)" style="background-color: blueviolet;"	>
+								<a href="#in1" class="js-scroll-trigger">Maximizar</a>
+							</button>
+                        </div>
+                    </div>
+                </form>
+
+                <form action="" method="post" name="form2" id="form2" style="display:block;">
+
+                    <div id="aqui">
+
+                        <hr class="line-breaking">
+
+                        <div class="row" style="display: none;">
+                            <!--
+                            <div  class="offset-md-3 col-md-6 offset-md-3 my-4 input-group d-flex text-center text-muted">
+                                <span class="px-3"></span>
+                                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"> X¹ </span>
+                                </div>
+                                <span class="px-3"></span>
+                                <input type="text" class="form-control">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"> X² </span>
+                                </div>
+
+                                <span class="px-3"></span>
+                                <input type="text" class="form-control">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"> X³ </span>
+                                </div>
+
+                                <span class="px-3"></span>
+                                <div class="input-group-append">
+                                    <span class="input-group-text"> &#8804; </span>
+                                </div>
+                                <input type="text" class="form-control">
+                            </div>
+                            -->
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div id="restricoesStatic" style="display: none;" class="offset-md-3 col-md-6 offset-md-3 my-4 input-group d-flex text-center text-muted">
+
+                        </div>
+
+                    </div>
+
+                    <div class="container">
+                        <div id="box-buttons-solve" class="row" style="display: none;">
+                            <br>
+                            <div class="col-md-6">
+                                <button type="reset" class="btn btn-success float-left ml-4" id="btn3" name="novo" value="Novo" onClick="atualizar()">
+                                    Voltar
+                                </button>
+                            </div>
+
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-primary float-right mr-4" id="btn2" name="calc" value="Resolver" onClick="resolver()">
+                                    Resolver
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <hr id="hr-pos-box-buttons-solve" class="line-breaking" style="display: none;">
+
+                <div id="box-table-final" class="row" style="display: none;">
+                    <div class="offset-md-2 col-md-8 offset-md-2 d-flex justify-content-around">
+                        <div id="resultado-final" class="table-responsive"></div>
+                    </div>
+                </div>
+
+                <hr id="hr-pos-box-table-final" class="line-breaking" style="display: none;">
+
+                <div id="box-table-MaxMin" class="row" style="display: none;">
+                    <div class="text-center my-5">
+                        <h3><b>Tabela de Análise de Sensibilidade</b></h3>
+                    </div>
+                    <div class="offset-md-2 col-md-8 offset-md-2 d-flex justify-content-around">
+                        <div id="valuesMaxMin" class="table-responsive"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="offset-md-2 col-md-8 offset-md-2 d-flex justify-content-around">
+                        <div id="tab" class="table-responsive"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="offset-md-8 col-md-2 offset-md-2 d-flex justify-content-around">
+                        <button type="button" class="btn btn-success" id="btn4" name="novo2" value="Novo" style="display: none;" onClick="atualizar()">Novo</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <script src="assets/js/jquery/jquery.min.js"></script>
+        <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+        <!-- Simplex Functions -->
+
+        <script src="assets/js/simplex-functions/fraction.js"></script>
+        <script src="assets/js/simplex-functions/funcoes.js"></script>
+
+        <!-- /Simplex Functions -->
+
+    </body>
 </html>
